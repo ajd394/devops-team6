@@ -10,9 +10,11 @@ end
 
 apt_update
 
-apt_package 'nginx'
+apt_package 'nginx' do
+    options '--allow-unauthenticated'
+end
 
-service 'apache' do
-    supports :status: true, :restart => true, :reload => true
+service 'nginx' do
+    supports :status => true, :restart => true, :reload => true
     action :enable
 end
