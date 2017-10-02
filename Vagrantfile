@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.network "forwarded_port", guest: 80, host: 8008
 
-    config.provision "shell",
+    config.vm.provision "shell",
         inline: "curl -L https://chef.io/chef/install.sh | sudo bash"
 
 end
