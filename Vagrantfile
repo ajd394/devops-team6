@@ -10,8 +10,4 @@ Vagrant.configure("2") do |config|
 
     config.vm.network "forwarded_port", guest: 80, host: 8000
 
-    config.vm.provision "chef_solo" do |chef|
-      chef.add_recipe "web_app"
-    end
-
   end
