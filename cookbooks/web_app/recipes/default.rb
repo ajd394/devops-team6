@@ -1,25 +1,28 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-apt_repository 'nginx' do
-  uri          'http://nginx.org/packages/ubuntu/'
-  distribution 'xenial'
-  components   ['nginx']
-  deb_src      true
+include_recipe 'nodejs'
+
+remote_directory '/web_app' do
+  source 'web_app'
+  files_owner 'root'
+  files_group 'root'
+  files_mode '0750'
+  action :create
+  recursive true
 end
 
-apt_update
-
-apt_package 'nginx' do
-  options '--allow-unauthenticated'
+execute 'npm install' do
+  cwd '/web_app'
+  command 'npm install'
 end
 
-service 'nginx' do
-  supports :status => true, :restart => true, :reload => true
-  action [:enable, :start]
+template '/etc/init/webapp.conf' do
+  source 'webapp.conf.erb'
+  mode 0440
 end
 
-cookbook_file '/usr/share/nginx/html/index.html' do
-  source 'index.html'
-  mode '0644'
+service 'webapp' do
+  action :start
+  provider Chef::Provider::Service::Upstart
 end
