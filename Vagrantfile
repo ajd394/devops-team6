@@ -5,7 +5,7 @@ VAGRANTFILE_API_VERSION = '2'
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "mongo", primary: true do |mongo|
   mongo.vm.box ="bento/ubuntu-14.04"
-  mongo.vm.network "forwarded_port", guest:27017, host:28018
+  #mongo.vm.network "forwarded_port", guest:27017, host:28018
   mongo.vm.network "private_network", ip: '192.168.50.51'
     mongo.vm.provision "chef_solo" do |chef|
       chef.add_recipe "mongo"
@@ -24,6 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define 'nginx' do |nginx| 
     nginx.vm.box = 'bento/ubuntu-16.04'
     nginx.vm.network 'forwarded_port', guest: 80, host: 8008
+    nginx.vm.network 'private_network', ip: '192.168.50.52'
     nginx.vm.provision 'chef_solo' do |chef|
       chef.roles_path = 'roles'
       chef.add_role('nginx')

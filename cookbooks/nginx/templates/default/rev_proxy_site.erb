@@ -1,0 +1,7 @@
+server { # simple reverse-proxy
+  listen   <%= node['nginx']['port'] -%>;
+
+  location / {
+    proxy_pass      <%= node['nginx']['proxy_pass_uri'] %>;
+  }
+}

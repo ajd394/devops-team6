@@ -27,11 +27,16 @@ template 'nginx.conf' do
   variables(lazy { { pid_file: pidfile_location } })
 end
 
-template "#{node['nginx']['dir']}/sites-available/default" do
-  source 'default-site.erb'
+template "#{node['nginx']['dir']}/sites-available/rev_proxy" do
+  source 'rev_proxy_site.erb'
   notifies :reload, 'service[nginx]', :delayed
 end
 
-nginx_site 'default' do
-  action node['nginx']['default_site_enabled'] ? :enable : :disable
+nginx_site 'rev_proxy' do
+  action :enable
+end
+
+file "/etc/nginx/conf.d/default.conf" do
+  action :delete
+  notifies :reload, 'service[nginx]', :delayed
 end
