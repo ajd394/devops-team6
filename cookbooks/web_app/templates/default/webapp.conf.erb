@@ -1,0 +1,8 @@
+description 'nodejs upstart script'
+
+start on filesystem and started networking
+respawn
+
+chdir /web_app
+
+exec npm start
