@@ -4,7 +4,7 @@
 VAGRANTFILE_API_VERSION = '2'
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "mongo" do |mongo|
-  mongo.vm.box ="bento/ubuntu-14.04"
+  mongo.vm.box ="bento/ubuntu-16.04"
   #mongo.vm.network "forwarded_port", guest:27017, host:28018
   mongo.vm.hostname = "mongo"
   mongo.vm.network "private_network", ip: '192.168.50.51'
