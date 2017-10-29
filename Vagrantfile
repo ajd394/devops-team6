@@ -3,16 +3,17 @@
 
 VAGRANTFILE_API_VERSION = '2'
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.define "mongo", primary: true do |mongo|
+  config.vm.define "mongo" do |mongo|
   mongo.vm.box ="bento/ubuntu-14.04"
   #mongo.vm.network "forwarded_port", guest:27017, host:28018
   mongo.vm.network "private_network", ip: '192.168.50.51'
     mongo.vm.provision "chef_solo" do |chef|
       chef.add_recipe "mongo"
+      chef.add_recipe "filebeat"
     end
   end
 
-  config.vm.define "web_app", primary: true do |web_app|
+  config.vm.define "web_app" do |web_app|
     web_app.vm.box ="bento/ubuntu-14.04"
     #web_app.vm.network "forwarded_port", guest:8080, host:8080
     web_app.vm.network "private_network", ip: '192.168.50.50'
@@ -28,6 +29,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     nginx.vm.provision 'chef_solo' do |chef|
       chef.roles_path = 'roles'
       chef.add_role('nginx')
+      chef.add_recipe "filebeat"
+      nginx.vm.provision "shell", inline: "cp /vagrant/filebeat/nginx/filebeat.yml /etc/filebeat/filebeat.yml"
+
     end
   end
 end

@@ -1,6 +1,7 @@
 name "nginx"
 description "An role to install and configure NGINX"
 run_list "recipe[nginx]"
+
 default_attributes "nginx" => { 
                                 "init_style" => "init",
                                 "port" => 80,
