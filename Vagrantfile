@@ -11,8 +11,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     mongo.vm.provision "chef_solo" do |chef|
       chef.add_recipe "mongo"
       chef.add_recipe "filebeat"
-      mongo.vm.provision "shell", inline: "cp /vagrant/filebeat/mongo/filebeat.yml /etc/filebeat/filebeat.yml"
     end
+  mongo.vm.provision "shell", inline: "mkdir -p /etc/filebeat; cp /vagrant/filebeat/mongo/filebeat.yml /etc/filebeat/filebeat.yml; chmod a+r /etc/filebeat/filebeat.yml"
   end
 
   config.vm.define "web_app" do |web_app|
@@ -35,8 +35,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.add_role('nginx')
       chef.add_recipe "filebeat"
     end
-    nginx.vm.provision "shell", inline: "mkdir -p /etc/filebeat; cp /vagrant/filebeat/nginx/filebeat.yml /etc/filebeat/filebeat.yml; chmod a+r /etc/filebeat/filebeat.yml"    
+    nginx.vm.provision "shell", inline: "mkdir -p /etc/filebeat; cp /vagrant/filebeat/nginx/filebeat.yml /etc/filebeat/filebeat.yml; chmod a+r /etc/filebeat/filebeat.yml"
   end
+
   config.vm.define 'elk' do |elk|
     elk.vm.box = "apolloclark/elastic5x-ubuntu14"
     elk.vm.box_version = "20170831"
