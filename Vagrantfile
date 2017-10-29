@@ -30,8 +30,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.roles_path = 'roles'
       chef.add_role('nginx')
       chef.add_recipe "filebeat"
-      nginx.vm.provision "shell", inline: "cp /vagrant/filebeat/nginx/filebeat.yml /etc/filebeat/filebeat.yml"
-
     end
+    nginx.vm.provision "shell", inline: "mkdir -p /etc/filebeat; cp /vagrant/filebeat/nginx/filebeat.yml /etc/filebeat/filebeat.yml; chmod a+r /etc/filebeat/filebeat.yml"    
+  end
+  config.vm.define 'elk' do |elk|
+    elk.vm.box = "apolloclark/elastic5x-ubuntu14"
+    elk.vm.box_version = "20170831"
+    elk.vm.network 'private_network', ip: '192.168.50.53'
   end
 end
