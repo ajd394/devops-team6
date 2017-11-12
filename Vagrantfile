@@ -45,4 +45,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     elk.vm.network 'forwarded_port', guest: 5601, host: 5601
     elk.vm.network 'private_network', ip: "192.168.50.53"
   end
+
+  config.vm.define "nagios" do |nagios|
+    nagios.vm.box ="bento/ubuntu-16.04"
+    #mongo.vm.network "forwarded_port", guest:80, host:8081
+    nagios.vm.hostname = "nagios"
+    nagios.vm.network "private_network", ip: '192.168.50.54'
+    nagios.vm.provision "shell", inline: "cd /vagrant && chmod +x nagios/setup.sh && ./nagios/setup.sh"
+  end
 end
