@@ -13,6 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.add_recipe "filebeat"
     end
   mongo.vm.provision "shell", inline: "mkdir -p /etc/filebeat; cp /vagrant/filebeat/mongo/filebeat.yml /etc/filebeat/filebeat.yml; chmod a+r /etc/filebeat/filebeat.yml"
+  mongo.vm.provision "shell", inline: "cd /vagrant && chmod +x nagios/remote-setup-mongo.sh && ./nagios/remote-setup-mongo.sh"
   end
 
   config.vm.define "web_app" do |web_app|
@@ -23,6 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     web_app.vm.provision "chef_solo" do |chef|
       chef.add_recipe "web_app"
     end
+    web_app.vm.provision "shell", inline: "cd /vagrant && chmod +x nagios/remote-setup-webapp.sh && ./nagios/remote-setup-webapp.sh"
   end
 
   config.vm.define 'nginx' do |nginx|
@@ -36,6 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.add_recipe "filebeat"
     end
     nginx.vm.provision "shell", inline: "mkdir -p /etc/filebeat; cp /vagrant/filebeat/nginx/filebeat.yml /etc/filebeat/filebeat.yml; chmod a+r /etc/filebeat/filebeat.yml"
+    nginx.vm.provision "shell", inline: "cd /vagrant && chmod +x nagios/remote-setup-nginx.sh && ./nagios/remote-setup-nginx.sh"
   end
 
   config.vm.define 'elk' do |elk|
@@ -44,6 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     elk.vm.hostname = "elk"
     elk.vm.network 'forwarded_port', guest: 5601, host: 5601
     elk.vm.network 'private_network', ip: "192.168.50.53"
+    
   end
 
   config.vm.define "nagios" do |nagios|

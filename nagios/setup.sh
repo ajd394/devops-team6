@@ -108,4 +108,7 @@ cd /vagrant
 sudo cp nagios/nagios.service /etc/systemd/system/nagios.service
 
 sudo systemctl enable /etc/systemd/system/nagios.service
+
+cp /vagrant/nagios/servers/nginx.cfg /usr/local/nagios/etc/servers/nginx.cfg
+
 sudo systemctl start nagios
