@@ -32,10 +32,10 @@ sudo make install-init
 
 cp /vagrant/nagios/nrpe-mongo.cfg /usr/local/nagios/etc/nrpe.cfg
 
-sudo systemctl enable nrpe.service
+sudo service  nrpe.service enable
 
-sudo systemctl start nrpe.service
+sudo service  nrpe.service start
 
-sudo systemctl status nrpe.service
+sudo service  nrpe.service status
 
 sudo ufw allow 5666/tcp
