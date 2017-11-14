@@ -32,10 +32,10 @@ sudo make install-init
 
 cp /vagrant/nagios/nrpe-webapp.cfg /usr/local/nagios/etc/nrpe.cfg
 
-sudo systemctl enable nrpe.service
+sudo status  nrpe.service enable
 
-sudo systemctl start nrpe.service
+sudo status  nrpe.service start
 
-sudo systemctl status nrpe.service
+sudo status  nrpe.service status
 
 sudo ufw allow 5666/tcp
